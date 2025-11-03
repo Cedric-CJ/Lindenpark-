@@ -4,7 +4,6 @@ type Page = 'Dashboard' | 'Planung' | 'Teams & Personen' | 'Orte & Veranstaltung
 
 interface SidebarProps {
   activePage: Page;
-  setActivePage: (page: Page) => void;
 }
 
 const CalendarIcon = () => (
@@ -48,13 +47,12 @@ const InboxIcon = () => (
 const NavItem: React.FC<{
   page: Page;
   activePage: Page;
-  setActivePage: (page: Page) => void;
   icon: React.ReactNode;
-}> = ({ page, activePage, setActivePage, icon }) => {
+}> = ({ page, activePage, icon }) => {
   const isActive = activePage === page;
   return (
-    <button
-      onClick={() => setActivePage(page)}
+    <a
+      href={`#/${page}`}
       className={`flex items-center w-full px-4 py-3 text-left transition-colors duration-200 ${
         isActive
           ? 'bg-brand-secondary dark:bg-gray-700 text-brand-primary dark:text-white border-r-4 border-brand-primary'
@@ -63,11 +61,11 @@ const NavItem: React.FC<{
     >
       {icon}
       <span className="ml-4 font-medium">{page}</span>
-    </button>
+    </a>
   );
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activePage }) => {
   const navItems: { page: Page; icon: React.ReactNode }[] = [
     { page: 'Dashboard', icon: <HomeIcon /> },
     { page: 'Planung', icon: <CalendarIcon /> },
@@ -84,7 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, setActivePage }) => {
       </div>
       <nav className="flex-1 mt-6">
         {navItems.map(({ page, icon }) => (
-          <NavItem key={page} page={page} activePage={activePage} setActivePage={setActivePage} icon={icon} />
+          <NavItem key={page} page={page} activePage={activePage} icon={icon} />
         ))}
       </nav>
       <div className="p-4 border-t border-gray-200 dark:border-gray-700">

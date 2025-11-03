@@ -56,3 +56,12 @@ Am Ende entsteht ein digitales Einsatzplanungssystem, das die organisatorischen 
 - **Einsatz 1—n Zuweisung n—1 Mitarbeitende**: Ein Einsatz kann mehrere Personen brauchen; Personen können mehrere Einsätze haben (Überlappungen sind fachlich zu prüfen).
 - **Einsatz n—1 Ort**: räumlicher Bezug, wichtig für parallele Belegung.
 - **Mitarbeitende n—m Rolle**: systemisch/fachlich zur Rechte- und Aufgabensteuerung.
+
+### Was die Webanwendung kann
+
+- **Dashboard** – Personalisierte Startseite mit schnellen Übersichten: heutige Einsätze, offene Schichten im Team und der Status persönlicher Anfragen.
+- **Visuelle Einsatzplanung** – Interaktiver Kalender (Wochen‑ und Monatsansicht) zum Erstellen von Einsätzen, Zuteilen von Personal und Verwalten von Status (geplant, offen, bestätigt). Enthält automatische Konfliktprüfung (Ort, Doppelbelegung, Verfügbarkeit).
+- **Team‑ und Personalverwaltung** – Übersicht über Teams und Mitarbeitende; Profile mit Kontaktdaten und Qualifikationen; Bearbeitung abhängig von Rechten.
+- **Rollenbasiertes Rechtesystem** – Drei Benutzerrollen (Administrator:innen, Teamleitungen, Mitarbeitende) mit klaren Zugriffsbefugnissen.
+- **Anfrage‑Management** – Zentrales System für Urlaubs-, Änderungs‑ und Vertretungsanfragen mit Genehmigungsworkflow für Vorgesetzte.
+- **Berichte & Export** – CSV‑Export ausgewählter Einsatzpläne zur Weiterverarbeitung (z. B. in Excel).

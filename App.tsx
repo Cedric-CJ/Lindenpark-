@@ -22,9 +22,19 @@ const isOverlapping = (start1: Date, end1: Date, start2: Date, end2: Date): bool
     return s1 < e2 && s2 < e1;
 };
 
+const getPageFromHash = (): Page => {
+    const hash = window.location.hash.substring(2); // remove #/
+    const page = decodeURIComponent(hash);
+    const validPages: Page[] = ['Dashboard', 'Planung', 'Teams & Personen', 'Orte & Veranstaltungen', 'Anfragen & Vertretungen', 'Berichte'];
+    if (validPages.includes(page as Page)) {
+        return page as Page;
+    }
+    return 'Dashboard';
+};
+
 
 const App: React.FC = () => {
-  const [activePage, setActivePage] = useState<Page>('Dashboard');
+  const [activePage, setActivePage] = useState<Page>(getPageFromHash());
   
   const [shifts, setShifts] = useState<Shift[]>(() => {
     try {
@@ -108,6 +118,24 @@ const App: React.FC = () => {
   });
   
   useEffect(() => {
+    const handleHashChange = () => {
+        setActivePage(getPageFromHash());
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    
+    if (!window.location.hash || window.location.hash === "#" || window.location.hash === "#/") {
+        window.location.hash = '#/Dashboard';
+    } else {
+        handleHashChange();
+    }
+
+    return () => {
+        window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+  
+  useEffect(() => {
     window.localStorage.setItem('shifts', JSON.stringify(shifts));
   }, [shifts]);
 
@@ -139,6 +167,10 @@ const App: React.FC = () => {
   useEffect(() => {
     window.localStorage.setItem('currentUserId', currentUser.id);
   }, [currentUser]);
+  
+  const navigate = (page: Page) => {
+    window.location.hash = `#/${page}`;
+  };
 
   const notifyUser = (userId: string, message: string) => {
     const user = users.find(u => u.id === userId);
@@ -340,7 +372,7 @@ const App: React.FC = () => {
   const renderContent = () => {
     switch (activePage) {
       case 'Dashboard':
-        return <Dashboard shifts={shifts} currentUser={currentUser} setActivePage={setActivePage} changeRequests={changeRequests} />;
+        return <Dashboard shifts={shifts} currentUser={currentUser} setActivePage={navigate} changeRequests={changeRequests} />;
       case 'Planung':
         return <Planning shifts={shifts} users={users} teams={teams} locations={locations} qualifications={qualifications} absences={absences} onUpdateShift={handleUpdateShift} onAddShift={handleAddShift} onDeleteShift={handleDeleteShift} currentUser={currentUser} onAddRequest={handleAddRequest} />;
       case 'Teams & Personen':
@@ -352,13 +384,13 @@ const App: React.FC = () => {
       case 'Berichte':
         return <Reports shifts={shifts} teams={teams} users={users} locations={locations} />;
       default:
-        return <Dashboard shifts={shifts} currentUser={currentUser} setActivePage={setActivePage} changeRequests={changeRequests} />;
+        return <Dashboard shifts={shifts} currentUser={currentUser} setActivePage={navigate} changeRequests={changeRequests} />;
     }
   };
 
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900 font-sans">
-      <Sidebar activePage={activePage} setActivePage={setActivePage} />
+      <Sidebar activePage={activePage} />
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header 
           pageTitle={activePage} 
@@ -368,7 +400,7 @@ const App: React.FC = () => {
           isDarkMode={isDarkMode}
           onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
           changeRequests={changeRequests}
-          setActivePage={setActivePage}
+          setActivePage={navigate}
         />
         <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
           {renderContent()}
