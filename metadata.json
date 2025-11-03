@@ -1,0 +1,5 @@
+{
+  "name": "Einsatzplanung Lindenpark",
+  "description": "A web-based system for shift planning for the Lindenpark community center. It helps manage teams, employees, locations, and events to avoid planning errors and increase transparency.",
+  "requestFramePermissions": []
+}
